@@ -25,7 +25,7 @@ When the installer asks for package options, use these values:
 | --- | --- |
 | Version | `None` |
 | RPF Encryption | `NG` |
-| Modern GTA Legacy compatibility mode | Enabled (checked) |
+| Modern GTA Legacy compatibility mode | Enabled |
 
 Then install the package and start the game through your usual mods loader. The installer writes only to the modded copy of `update2.rpf`; the original game files are not changed.
 
