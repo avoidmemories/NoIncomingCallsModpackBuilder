@@ -1,0 +1,3 @@
+[submodule "codewalker-projects"]
+	path = external/CodeWalkerProjects
+	url = https://github.com/cryleak/CodeWalkerProjects.git

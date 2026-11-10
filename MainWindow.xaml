@@ -1,0 +1,121 @@
+<Window x:Class="NoIncomingCallsModpackBuilder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="No Incoming Calls Modpack Builder"
+        Width="960" Height="560" MinWidth="960" MinHeight="560"
+        WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow"
+        Background="Transparent" FontFamily="Segoe UI" SnapsToDevicePixels="True"
+        UseLayoutRounding="True" SourceInitialized="Window_SourceInitialized">
+    <!-- The native title bar provides the upper rounding. The client surface
+         stays square at the top and rounds only at its bottom edge. -->
+    <Border Background="{StaticResource WindowBrush}" CornerRadius="0,0,8,8"
+            BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" ClipToBounds="True">
+        <Grid Margin="14,12,14,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Build an up-to-date call blocker" Foreground="{StaticResource TextBrush}"
+                       FontSize="18" FontWeight="SemiBold" Margin="2,0,2,14" />
+
+            <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1" CornerRadius="8" Padding="14,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="GTA V FOLDER" Foreground="{StaticResource SubTextBrush}" FontSize="10.5" FontWeight="SemiBold" />
+                        <TextBlock x:Name="GameFolderText" Text="Choose your GTA V Legacy or Enhanced installation folder"
+                                   Foreground="{StaticResource TextBrush}" FontSize="12.5" Margin="0,6,0,0"
+                                   TextTrimming="CharacterEllipsis" ToolTip="" />
+                    </StackPanel>
+                    <Button Grid.Column="1" x:Name="BrowseFolderButton" Content="Browse" Style="{StaticResource SidebarButton}" Width="84"
+                            VerticalAlignment="Center" Click="ChooseFolderButton_Click" />
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="2" Margin="0,12,0,8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="0,0,6,0">
+                        <StackPanel><TextBlock Text="EDITION" Foreground="{StaticResource SubTextBrush}" FontSize="10" FontWeight="SemiBold" /><TextBlock x:Name="EditionText" Text="—" Foreground="{StaticResource TextBrush}" FontSize="13" FontWeight="SemiBold" Margin="0,5,0,0" /></StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="3,0">
+                        <StackPanel><TextBlock Text="GAME BUILD" Foreground="{StaticResource SubTextBrush}" FontSize="10" FontWeight="SemiBold" /><TextBlock x:Name="GameBuildText" Text="—" Foreground="{StaticResource TextBrush}" FontSize="13" FontWeight="SemiBold" Margin="0,5,0,0" TextTrimming="CharacterEllipsis" /></StackPanel>
+                    </Border>
+                    <Border Grid.Column="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="6,0,0,0">
+                        <StackPanel><TextBlock Text="VALIDATION" Foreground="{StaticResource SubTextBrush}" FontSize="10" FontWeight="SemiBold" /><TextBlock x:Name="ValidationText" Text="Waiting" Foreground="{StaticResource SubTextBrush}" FontSize="13" FontWeight="SemiBold" Margin="0,5,0,0" /></StackPanel>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Row="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrushSoft}"
+                        BorderThickness="1" CornerRadius="8" Padding="14,12" Margin="0,12,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                        <Grid Grid.Row="0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="SCRIPTS INCLUDED IN THE OIV" Foreground="{StaticResource SubTextBrush}" FontSize="10.5" FontWeight="SemiBold" /><TextBlock x:Name="ScriptCountText" Grid.Column="1" Text="Waiting" Foreground="{StaticResource SubTextBrush}" FontSize="10.5" /></Grid>
+                        <ScrollViewer Grid.Row="1" Margin="0,10,0,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
+                            <CheckBox x:Name="PrimaryScriptsOption" Content="PRIMARY" IsChecked="True" Style="{StaticResource ScriptScopeOption}" Checked="ScriptScopeOption_Checked" Unchecked="ScriptScopeOption_Checked" />
+                            <ItemsControl x:Name="PrimaryScriptsList" Margin="12,5,0,4"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><Border Background="{StaticResource RaisedBrush}" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7" Padding="8,5"><TextBlock Text="{Binding}" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="10.5" /></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                            <CheckBox x:Name="OptionalScriptsOption" Content="OPTIONAL" Style="{StaticResource ScriptScopeOption}" Checked="ScriptScopeOption_Checked" Unchecked="ScriptScopeOption_Checked" Margin="0,3,0,0" />
+                            <ItemsControl x:Name="OptionalScriptsList" Margin="12,5,0,0"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><Border Background="{StaticResource RaisedBrush}" BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="5" Margin="0,0,7,7" Padding="8,5"><TextBlock Text="{Binding}" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="10.5" /></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="3" Background="{StaticResource PanelBrush}" CornerRadius="8" BorderBrush="{StaticResource BorderBrushSoft}"
+                    BorderThickness="1" Padding="14,10" Margin="0,4,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="StatusText" Text="Choose a GTA V folder to begin." Foreground="{StaticResource SubTextBrush}" FontSize="11.5" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <Border Grid.Column="1" x:Name="BuildRoot" Background="White" CornerRadius="6" Width="164">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Opacity" Value="1" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEnabled, ElementName=BuildButton}" Value="False">
+                                        <Setter Property="Opacity" Value="0.34" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="2" /><ColumnDefinition Width="34" /></Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" x:Name="BuildButton" Content="Build Modpack" Style="{StaticResource BuildSplitButton}" IsEnabled="False" Click="BuildButton_Click" />
+                            <Border Grid.Column="1" Background="#090909" />
+                            <Button Grid.Column="2" x:Name="BuildExtraButton" Style="{StaticResource BuildSplitButton}" IsEnabled="False" Padding="0" Click="BuildExtraButton_Click">
+                                <Viewbox Width="12" Height="12"><Canvas Width="16" Height="16"><Path Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="2.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Data="M6 3.5 L11 8 L6 12.5" /></Canvas></Viewbox>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Popup x:Name="BuildMenuPopup" PlacementTarget="{Binding ElementName=BuildExtraButton}" Placement="Top" VerticalOffset="-4" AllowsTransparency="True" StaysOpen="False" Opened="BuildMenuPopup_Opened" Closed="BuildMenuPopup_Closed">
+                        <Border Background="#111111" CornerRadius="8" BorderBrush="#333333" BorderThickness="1" Padding="6" x:Name="BuildFlyoutBorder" Opacity="0">
+                            <StackPanel MinWidth="150">
+                                <Button Content="Set export folder" Style="{StaticResource FlyoutItem}" Height="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10,1" Click="SetExportFolderButton_Click" />
+                                <Button Content="Build as .zip" Style="{StaticResource FlyoutItem}" Height="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10,1" Click="BuildZipButton_Click" />
+                                <Button Content="Build original" Style="{StaticResource FlyoutItem}" Height="24" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="10,1" Click="BuildOriginalButton_Click" />
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
