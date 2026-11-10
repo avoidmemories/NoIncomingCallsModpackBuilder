@@ -72,7 +72,7 @@ public sealed class OivPackageBuilder
 <name>{packageName}</name>
 <version><major>1</major><minor>0</minor><tag>{tag}</tag></version>
 <gameversion>{edition}</gameversion>
-<author><displayName>No Incoming Calls Modpack Builder</displayName></author>
+<author><displayName>No Incoming Calls Modpack Builder</displayName><actionLink>https://github.com/avoidmemories/NoIncomingCallsModpackBuilder</actionLink></author>
 {description}
 </metadata>
 <colors><headerBackground useBlackTextColor="False">$FF202020</headerBackground><iconBackground>$FF202020</iconBackground></colors>
