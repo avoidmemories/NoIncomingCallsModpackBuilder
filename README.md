@@ -4,6 +4,9 @@ Windows tool that creates a version-aware GTA V `.oiv` or `.zip` package to supp
 
 The builder does not ship old game scripts. It reads the original scripts from the selected GTA V Legacy or Enhanced installation at build time, validates their layout, modifies only the selected script categories in memory, and writes those copies into a new package. It never changes the game installation itself.
 
+> [!IMPORTANT]
+> A generated modpack is tied to the GTA V build from which its scripts were read. After GTA V updates, do not keep using an older package: open the builder again and create a new modpack from the updated game files. Replacing scripts in `update2.rpf` with copies from a different build can cause bugs or prevent the game from working correctly.
+
 ## Build a modpack
 
 1. Run **No Incoming Calls Modpack Builder**.
