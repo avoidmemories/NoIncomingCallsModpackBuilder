@@ -6,8 +6,8 @@ The builder does not ship old game scripts. It reads the original scripts from t
 
 > [!IMPORTANT]
 > A generated modpack is tied to the GTA V build from which its scripts were read. After GTA V updates, do not keep using an older package: open the builder again and create a new modpack from the updated game files. Replacing scripts in `update2.rpf` with copies from a different build can cause bugs or prevent the game from working correctly.
-
-Some Story Mode missions use an incoming NPC phone call to begin or continue their flow. Blocking those calls can prevent such missions from progressing or cause other mission-related issues. Use the mod only when that trade-off is acceptable.
+>
+> Some missions use an incoming NPC phone call to begin or continue their flow. Blocking those calls can prevent such missions from progressing or cause other mission-related issues. Use the mod only when that trade-off is acceptable.
 
 ## Build a modpack
 
