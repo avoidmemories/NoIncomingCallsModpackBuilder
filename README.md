@@ -47,10 +47,8 @@ CodeWalkerProjects is an external Git submodule. Clone recursively:
 ```powershell
 git clone --recurse-submodules https://github.com/avoidmemories/NoIncomingCallsModpackBuilder.git
 cd NoIncomingCallsModpackBuilder
-dotnet build -c Release
+dotnet build ".\No Incoming Calls Modpack Builder.csproj" -c Release
 ```
-
-Before building, close every running **No Incoming Calls Modpack Builder** window. The build replaces the executable in `bin\Release`, and Windows cannot replace it while it is running.
 
 If the repository was cloned without its submodule:
 
