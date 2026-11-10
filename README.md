@@ -4,16 +4,30 @@ Windows tool that creates a version-aware GTA V `.oiv` or `.zip` package to supp
 
 The builder does not ship old game scripts. It reads the original scripts from the selected GTA V Legacy or Enhanced installation at build time, validates their layout, modifies only the selected script categories in memory, and writes those copies into a new package. It never changes the game installation itself.
 
-## Use
+## Build a modpack
 
 1. Run **No Incoming Calls Modpack Builder**.
 2. Select the GTA V Legacy or Enhanced installation folder.
-3. Select `PRIMARY`
+3. Select `PRIMARY`, `OPTIONAL`, or both.
 4. Select **Build Modpack**.
 
 The first build asks where packages should be saved. That export folder is remembered; use `>` → **Set export folder** to change it later.
 
 `PRIMARY` contains `dialogue_handler.ysc`. `OPTIONAL` contains eight dedicated ambient-call scripts. The builder creates a package only when at least one category is selected.
+
+## Install the generated modpack
+
+Use the **CodeWalker OIV Installer** from [cryleak/CodeWalkerProjects](https://github.com/cryleak/CodeWalkerProjects) to install the generated `.oiv` into the same GTA V edition that was selected in the builder.
+
+When the installer asks for package options, use these values:
+
+| Option | Required value |
+| --- | --- |
+| Version | `None` |
+| RPF Encryption | `NG` |
+| Modern GTA Legacy compatibility mode | Enabled (checked) |
+
+Then install the package and start the game through your usual mods loader. The installer writes only to the modded copy of `update2.rpf`; the original game files are not changed.
 
 ## Requirements
 
