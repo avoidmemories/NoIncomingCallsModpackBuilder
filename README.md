@@ -1,6 +1,6 @@
 # No Incoming Calls Modpack Builder
 
-Windows tool that creates a version-aware GTA V `.oiv` or `.zip` package to suppress incoming NPC phone calls in Story Mode.
+Windows tool that creates a version-aware GTA V `.oiv` or `.zip` package to suppress incoming NPC phone calls
 
 The builder does not ship old game scripts. It reads the original scripts from the selected GTA V Legacy or Enhanced installation at build time, validates their layout, modifies only the selected script categories in memory, and writes those copies into a new package. It never changes the game installation itself.
 
@@ -8,7 +8,7 @@ The builder does not ship old game scripts. It reads the original scripts from t
 
 1. Run **No Incoming Calls Modpack Builder**.
 2. Select the GTA V Legacy or Enhanced installation folder.
-3. Select `PRIMARY`, `OPTIONAL`, or both.
+3. Select `PRIMARY`
 4. Select **Build Modpack**.
 
 The first build asks where packages should be saved. That export folder is remembered; use `>` → **Set export folder** to change it later.
@@ -41,7 +41,7 @@ The executable is produced in `bin\Release\net10.0-windows\`.
 
 ## Dependency and attribution
 
-The project uses [`CodeWalker.Core`](https://github.com/cryleak/CodeWalkerProjects) only to read GTA V RPF archives and encryption keys. The complete upstream project remains an external submodule under `external/CodeWalkerProjects`; it is not part of this application's source tree. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for its attribution and separate terms.
+The project uses [`CodeWalker.Core`](https://github.com/crxhvrd/CodeWalkerProjects) only to read GTA V RPF archives and encryption keys. The complete upstream project remains an external submodule under `external/CodeWalkerProjects`; it is not part of this application's source tree. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for its attribution and separate terms.
 
 ## License
 

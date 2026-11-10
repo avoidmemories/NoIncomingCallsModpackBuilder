@@ -47,7 +47,6 @@ public sealed class GameScriptService
 
         progress?.Invoke("Loading encryption keys from the selected game...");
         GTA5Keys.LoadFromPath(root, edition == GameEdition.Enhanced, null);
-        GTA5Keys.EnsureNgEncryptionTables();
 
         progress?.Invoke("Reading update2.rpf...");
         var errors = new List<string>();

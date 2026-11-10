@@ -4,7 +4,7 @@
 
 This application references `CodeWalker.Core` through the `external/CodeWalkerProjects` Git submodule. It is used for GTA V archive access and key loading only.
 
-- Upstream source: <https://github.com/cryleak/CodeWalkerProjects>
+- Upstream source: <https://github.com/crxhvrd/CodeWalkerProjects>
 - Original CodeWalker author: dexyfex
 - The upstream source includes the notice: “This source code is released for educational purposes only.”
 
