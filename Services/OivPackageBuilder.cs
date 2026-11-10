@@ -79,7 +79,7 @@ public sealed class OivPackageBuilder
 <author><displayName>No Incoming Calls Modpack Builder</displayName><actionLink>https://github.com/avoidmemories/NoIncomingCallsModpackBuilder</actionLink></author>
 {description}
 </metadata>
-<colors><headerBackground useBlackTextColor="False">$FF202020</headerBackground><iconBackground>$FF202020</iconBackground></colors>
+<colors><headerBackground useBlackTextColor="False">$FF000000</headerBackground><iconBackground>$FF000000</iconBackground></colors>
 <content>
 <archive path="update\update2.rpf" createIfNotExist="True" type="RPF7">
 <archive path="\x64\levels\gta5\script\script_rel.rpf" createIfNotExist="True" type="RPF7">
