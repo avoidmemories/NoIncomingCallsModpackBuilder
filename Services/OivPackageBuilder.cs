@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace NoIncomingCallsModpackBuilder.Services;
 
 public sealed class OivPackageBuilder
 {
+    private const string ModpackIconResource = "NoIncomingCallsModpackBuilder.ModpackIcon.png";
+
     public BuildResult Build(GameScanResult scan, IReadOnlyList<PatchedScript> scripts, string outputPath)
     {
         if (scripts.Count == 0 || scripts.Any(script => !scan.Scripts.ContainsKey(script.Name)))
@@ -43,6 +46,7 @@ public sealed class OivPackageBuilder
 
         using var zip = ZipFile.Open(fullOutputPath, ZipArchiveMode.Create);
         AddText(zip, "assembly.xml", CreateAssembly(scan, scripts, isOriginal));
+        AddBytes(zip, "icon.png", LoadModpackIcon());
         AddText(zip, "README.txt", CreateReadme(scan, scripts, isOriginal));
         foreach (var script in scripts.OrderBy(script => script.Name, StringComparer.OrdinalIgnoreCase))
             AddBytes(zip, $"content\\scripts\\{script.Name}", script.Bytes);
@@ -111,6 +115,16 @@ Scripts and SHA-256 prefixes:
 
     private static void AddText(ZipArchive archive, string path, string text)
         => AddBytes(archive, path, new UTF8Encoding(false).GetBytes(text));
+
+    private static byte[] LoadModpackIcon()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream(ModpackIconResource)
+            ?? throw new InvalidOperationException("The embedded modpack icon is missing.");
+        using var data = new MemoryStream();
+        stream.CopyTo(data);
+        return data.ToArray();
+    }
 
     private static void AddBytes(ZipArchive archive, string path, byte[] data)
     {

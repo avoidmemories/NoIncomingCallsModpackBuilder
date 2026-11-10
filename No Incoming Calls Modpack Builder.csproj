@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <Resource Include="assets\nicmb.ico" />
+    <!-- Image displayed by the OIV installer for each generated modpack. -->
+    <EmbeddedResource Include="assets\modpack-icon.png" LogicalName="NoIncomingCallsModpackBuilder.ModpackIcon.png" />
     <!-- CodeWalker is a separately built submodule, never source code of this app. -->
     <Compile Remove="external\**\*.cs" />
     <EmbeddedResource Remove="external\**\*" />
