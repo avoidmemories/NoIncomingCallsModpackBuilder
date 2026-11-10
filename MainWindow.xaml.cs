@@ -16,6 +16,9 @@ public partial class MainWindow : Window
     private readonly OivPackageBuilder _oivBuilder = new();
     private GameScanResult? _scan;
     private bool _isBusy;
+    private bool _isAnalysing;
+    private int _analysisGeneration;
+    private string? _gameFolder;
     private string? _exportFolder;
     private DateTime _buildMenuClosedAt = DateTime.MinValue;
     private DateTime _doneVisibleUntil = DateTime.MinValue;
@@ -26,6 +29,7 @@ public partial class MainWindow : Window
         PrimaryScriptsList.ItemsSource = new[] { GameScriptService.DialogueHandlerScript };
         OptionalScriptsList.ItemsSource = GameScriptService.AmbientCallerScripts;
         RefreshScriptList();
+        UpdateFolderActions();
         Loaded += MainWindow_Loaded;
     }
 
@@ -35,8 +39,10 @@ public partial class MainWindow : Window
         var lastGameFolder = UserSettings.LoadLastGameFolder();
         if (string.IsNullOrWhiteSpace(lastGameFolder)) return;
 
+        _gameFolder = lastGameFolder;
         GameFolderText.Text = lastGameFolder;
         GameFolderText.ToolTip = lastGameFolder;
+        UpdateFolderActions();
         if (Directory.Exists(lastGameFolder))
             await AnalyseFolderAsync(lastGameFolder, showError: false);
         else
@@ -53,11 +59,45 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog(this) != true) return;
 
         UserSettings.SaveLastGameFolder(dialog.FolderName);
+        _gameFolder = dialog.FolderName;
         await AnalyseFolderAsync(dialog.FolderName);
+    }
+
+    private async void RecheckFolderButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isBusy || string.IsNullOrWhiteSpace(_gameFolder) || !Directory.Exists(_gameFolder)) return;
+        await AnalyseFolderAsync(_gameFolder);
+    }
+
+    private void UnloadFolderButton_Click(object sender, RoutedEventArgs e)
+    {
+        // CodeWalker does not expose cancellation for an RPF read already in
+        // progress. Invalidate that result immediately so the UI is usable and
+        // any eventual background completion is ignored.
+        _analysisGeneration++;
+        var wasAnalysing = _isAnalysing;
+        _isAnalysing = false;
+        _scan = null;
+        _gameFolder = null;
+        UserSettings.ClearLastGameFolder();
+
+        GameFolderText.Text = "Choose your GTA V Legacy or Enhanced installation folder";
+        GameFolderText.ToolTip = null;
+        EditionText.Text = "—";
+        GameBuildText.Text = "—";
+        ValidationText.Text = "Waiting";
+        ValidationText.Foreground = (Brush)FindResource("SubTextBrush");
+        ScriptCountText.Text = "Waiting";
+        StatusText.Text = string.Empty;
+        if (wasAnalysing) SetBusy(false);
+        else UpdateFolderActions();
+        UpdateBuildAvailability();
     }
 
     private async Task AnalyseFolderAsync(string gameFolder, bool showError = true)
     {
+        var analysisGeneration = ++_analysisGeneration;
+        _isAnalysing = true;
         SetBusy(true);
         _scan = null;
         BuildButton.IsEnabled = false;
@@ -72,7 +112,10 @@ public partial class MainWindow : Window
 
         try
         {
-            var result = await Task.Run(() => _gameScripts.ReadAndValidate(gameFolder, SetProgress));
+            var result = await Task.Run(() => _gameScripts.ReadAndValidate(gameFolder,
+                message => SetProgress(analysisGeneration, message)));
+            if (analysisGeneration != _analysisGeneration) return;
+
             _scan = result;
             EditionText.Text = result.Edition.ToString();
             GameBuildText.Text = result.GameVersion;
@@ -84,6 +127,8 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            if (analysisGeneration != _analysisGeneration) return;
+
             ValidationText.Text = "Stopped safely";
             ValidationText.Foreground = (Brush)FindResource("BadBrush");
             SetStatus("Validation stopped. See the message for details.", "BadBrush");
@@ -95,7 +140,11 @@ public partial class MainWindow : Window
         }
         finally
         {
-            SetBusy(false);
+            if (analysisGeneration == _analysisGeneration)
+            {
+                _isAnalysing = false;
+                SetBusy(false);
+            }
         }
     }
 
@@ -234,9 +283,13 @@ public partial class MainWindow : Window
         });
     }
 
-    private void SetProgress(string message)
+    private void SetProgress(int analysisGeneration, string message)
     {
-        Dispatcher.BeginInvoke(() => SetStatus(message, "SubTextBrush"));
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (analysisGeneration == _analysisGeneration && _isAnalysing)
+                SetStatus(message, "SubTextBrush");
+        });
     }
 
     private async void BuildDoneEffect(string path)
@@ -281,6 +334,7 @@ public partial class MainWindow : Window
     {
         _isBusy = busy;
         BrowseFolderButton.IsEnabled = !busy;
+        UpdateFolderActions();
         UpdateBuildAvailability();
         if (busy) BuildMenuPopup.IsOpen = false;
         Cursor = busy ? System.Windows.Input.Cursors.Wait : System.Windows.Input.Cursors.Arrow;
@@ -331,6 +385,12 @@ public partial class MainWindow : Window
         var enabled = !_isBusy && _scan is not null && (IncludePrimaryScripts || IncludeOptionalScripts);
         BuildButton.IsEnabled = enabled;
         BuildExtraButton.IsEnabled = enabled;
+    }
+
+    private void UpdateFolderActions()
+    {
+        RecheckFolderButton.IsEnabled = !_isBusy && !string.IsNullOrWhiteSpace(_gameFolder) && Directory.Exists(_gameFolder);
+        UnloadFolderButton.IsEnabled = !string.IsNullOrWhiteSpace(_gameFolder) && (!_isBusy || _isAnalysing);
     }
 
     private static string ToFileNamePart(string value)

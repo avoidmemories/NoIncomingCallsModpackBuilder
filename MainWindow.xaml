@@ -35,8 +35,14 @@
                                    Foreground="{StaticResource TextBrush}" FontSize="12.5" Margin="0,6,0,0"
                                    TextTrimming="CharacterEllipsis" ToolTip="" />
                     </StackPanel>
-                    <Button Grid.Column="1" x:Name="BrowseFolderButton" Content="Browse" Style="{StaticResource SidebarButton}" Width="84"
-                            VerticalAlignment="Center" Click="ChooseFolderButton_Click" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BrowseFolderButton" Content="Browse" Style="{StaticResource SidebarButton}" Width="84"
+                                Click="ChooseFolderButton_Click" />
+                        <Button x:Name="RecheckFolderButton" Content="Recheck" Style="{StaticResource SidebarButton}" Width="76"
+                                Margin="7,0,0,0" Click="RecheckFolderButton_Click" />
+                        <Button x:Name="UnloadFolderButton" Content="Unload" Style="{StaticResource SidebarButton}" Width="72"
+                                Margin="7,0,0,0" Click="UnloadFolderButton_Click" />
+                    </StackPanel>
                 </Grid>
             </Border>
 

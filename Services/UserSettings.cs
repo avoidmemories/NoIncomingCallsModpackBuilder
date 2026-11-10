@@ -20,6 +20,9 @@ public static class UserSettings
     public static void SaveLastGameFolder(string folder)
         => Save(Load() with { LastGameFolder = folder });
 
+    public static void ClearLastGameFolder()
+        => Save(Load() with { LastGameFolder = null });
+
     public static void SaveLastExportFolder(string folder)
         => Save(Load() with { LastExportFolder = folder });
 
