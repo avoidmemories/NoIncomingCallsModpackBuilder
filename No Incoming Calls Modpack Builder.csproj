@@ -8,9 +8,11 @@
     <AssemblyName>No Incoming Calls Modpack Builder</AssemblyName>
     <RootNamespace>NoIncomingCallsModpackBuilder</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>assets\nicmb.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Resource Include="assets\nicmb.ico" />
     <!-- CodeWalker is a separately built submodule, never source code of this app. -->
     <Compile Remove="external\**\*.cs" />
     <EmbeddedResource Remove="external\**\*" />
